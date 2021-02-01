@@ -46,7 +46,6 @@ ARG P4PLOGDIR=${P4HOME}/log
 ENV LANG="ja_JP.UTF-8" \
     LANGUAGE="ja_JP:ja" \
     LC_ALL="ja_JP.UTF-8" \
-    PORT=ssl:1777 \
     P4PCACHE=${P4HOME}/p4p-master \
     P4SSLDIR=${P4HOME}/ssl \
     P4PLOGFILE=${P4PLOGDIR}/p4p.log
@@ -58,7 +57,5 @@ RUN sudo -E -u perforce mkdir -p ${P4PCACHE} \
     && chmod 644 /etc/logrotate.d/p4p \
     && /usr/sbin/logrotate /etc/logrotate.conf \
     && systemctl enable crond
-
-EXPOSE 1777:1777
 
 CMD ["/sbin/init"]

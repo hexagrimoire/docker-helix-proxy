@@ -14,10 +14,10 @@ services:
   p4proxy:
     build: ./p4p
     environment:
-      P4TARGET: ssl:127.0.0.1:1666
+      P4PORT: ssl:1666
+      PORT: ssl:1777
       P4USER: super
       P4PASSWD: Passw0rd
-      P4PORT: ${P4TARGET}
     cap_add:
       - SYS_ADMIN
     security_opt:
@@ -25,4 +25,5 @@ services:
     privileged: true
     tty: true
     image: p4p
-
+    ports:
+      - "1777:1777"
