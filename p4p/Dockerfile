@@ -25,7 +25,7 @@ RUN cd /lib/systemd/system/sysinit.target.wants/ && \
     && yum clean all --enablerepo='*' \
     && rm -rf /var/cache/yum \
     && rpm --import https://package.perforce.com/perforce.pubkey \
-    && yum-config-manager --add-repo https://gist.githubusercontent.com/hexagrimoire/032c761c748fac87f2e0da9d6b9acc55/raw/52968f498cc618cbfe0a76f189c8ebd26bdefa31/perforce.centos7.repo \
+    && yum-config-manager --add-repo https://gist.githubusercontent.com/hexagrimoire/f235f327baacdf6f109903eec5d9a717/raw/f54bb09d6a73d390762feaf0ef3344d128677dc9/perforce.centos.repo \
     && yum install -y tzdata helix-p4d helix-proxy logrotate cronie sudo \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && localedef -i /usr/share/i18n/locales/ja_JP -f UTF-8 /usr/lib/locale/ja_JP.UTF-8 \
