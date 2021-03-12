@@ -1,13 +1,14 @@
-FROM centos:7
+FROM centos:8
 LABEL maintainer "ueno.s <ueno.s@gamestudio.co.jp>"
-ENV container docker
 
-# --------------------------------------------------------------------------------
-# Docker CentOS 7 install & setup
-# --------------------------------------------------------------------------------
-
-# See: https://hub.docker.com/_/centos/
-RUN cd /lib/systemd/system/sysinit.target.wants/ && \
+RUN dnf -y install centos-release-stream yum-utils tzdata logrotate cronie sudo glibc-langpack-ja glibc glibc-common \
+    && dnf -y swap centos-{linux,stream}-repos \
+    && dnf -y distro-sync \
+    && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial \
+    && dnf -y upgrade \
+    && dnf -y install glibc-locale-source \
+    && dnf clean all \
+    && cd /lib/systemd/system/sysinit.target.wants/ && \
     for i in *; do \
         [ $i == systemd-tmpfiles-setup.service ] || rm -vf $i ; \
     done ; \
@@ -26,10 +27,10 @@ RUN cd /lib/systemd/system/sysinit.target.wants/ && \
     && rm -rf /var/cache/yum \
     && rpm --import https://package.perforce.com/perforce.pubkey \
     && yum-config-manager --add-repo https://gist.githubusercontent.com/hexagrimoire/f235f327baacdf6f109903eec5d9a717/raw/f54bb09d6a73d390762feaf0ef3344d128677dc9/perforce.centos.repo \
-    && yum install -y tzdata helix-p4d helix-proxy logrotate cronie sudo \
+    && yum install -y helix-p4d helix-proxy \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
-    && localedef -i /usr/share/i18n/locales/ja_JP -f UTF-8 /usr/lib/locale/ja_JP.UTF-8 \
-    && localedef --add-to-archive /usr/lib/locale/ja_JP.UTF-8 \
+    && localedef -f UTF-8 -i ja_JP ja_JP.UTF-8 \
+    && sed -i -e '/override_install_langs/s/$/,ja_JP.utf8/g' /etc/locale.conf \
     && source /etc/locale.conf
 
 # Add external files
